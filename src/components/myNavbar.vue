@@ -21,6 +21,9 @@
             <li class="nav-item" v-if="userRole === 'tester'">
               <router-link class="nav-link" to="/tester">Tester Dashboard</router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/manageuser">Manage User</router-link>
+            </li>
           </ul>
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">

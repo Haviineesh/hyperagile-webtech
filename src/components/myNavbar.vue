@@ -18,14 +18,8 @@
             <li class="nav-item">
               <router-link class="nav-link" to="/">Home</router-link>
             </li>
-            <li class="nav-item" v-if="userRole === 'admin'">
-              <router-link class="nav-link" to="/admin">Admin Dashboard</router-link>
-            </li>
             <li class="nav-item" v-if="userRole === 'tester'">
               <router-link class="nav-link" to="/tester">Tester Dashboard</router-link>
-            </li>
-            <li class="nav-item" v-if="userRole === 'stakeholder'">
-              <router-link class="nav-link" to="/stakeholder">Stakeholder Dashboard</router-link>
             </li>
           </ul>
           <ul class="navbar-nav ms-auto">
@@ -40,32 +34,22 @@
   
   <script>
   export default {
-    name: 'my-nav-bar',
-    props: {
-      userRole: {
-        type: String,
-        required: true
-      }
+    name: 'myNavbar',
+    data() {
+      return {
+        userRole: 'tester' // For demonstration purposes, replace with your logic
+      };
     },
     methods: {
       logout() {
-        this.$emit('logout');
+        // Implement logout logic
+        console.log('Logging out...');
       }
     }
   };
   </script>
   
   <style scoped>
-  .navbar {
-    background-color: #f8f9fa;
-  }
-  
-  .nav-link {
-    color: #007bff;
-  }
-  
-  .nav-link:hover {
-    color: #0056b3;
-  }
+  /* Bootstrap styles will handle most of this */
   </style>
   

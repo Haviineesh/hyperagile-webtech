@@ -3,11 +3,13 @@ import App from './App.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 import TesterDashboard from './components/myTestCase.vue';
+import AdminDashboard from './components/myUser.vue';
 import MyNavBar from './components/myNavbar.vue';
 
 // Define routes
 const routes = [
   { path: '/tester', component: TesterDashboard, meta: { role: 'tester' } },
+  { path: '/admin', component: AdminDashboard, meta: { role: 'admin' } },
 ];
 
 // Create router instance

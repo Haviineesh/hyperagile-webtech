@@ -11,7 +11,7 @@
       </div>
   
       <div class="mt-3 mb-3 d-flex justify-content-end">
-        <a href="/adduser" class="btn btn-light">Add New User <i class="bi bi-plus"></i></a>
+        <a href="/adduser" class="btn btn-success">Add New User</a>
       </div>
   
       <table class="table table-bordered">

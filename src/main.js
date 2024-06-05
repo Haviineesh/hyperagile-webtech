@@ -3,17 +3,18 @@ import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import App from './App.vue';
 
+import ForgotPassword from './components/myForgotPassword.vue';
 import MyLogin from './components/myLogin.vue';
 import MyNavBar from './components/myNavbar.vue';
 import TesterDashboard from './components/myTestCase.vue';
 import AdminDashboard from './components/myUser.vue';
 import AddUserForm from './components/myUserAdd.vue';
 import EditUserForm from './components/myUserEdit.vue';
-import MyNavBar from './components/myNavbar.vue';
 
 // Define routes
 const routes = [
   { path: '/', component: MyLogin },
+  {path: '/forgotpassword', component: ForgotPassword},
   { path: '/tester', component: TesterDashboard, meta: { role: 'tester' } },
   { path: '/manageuser', component: AdminDashboard, meta: { role: 'admin' } },
   { path: '/adduser', component: AddUserForm, meta: { role: 'admin' } },

@@ -45,7 +45,7 @@
             <button type="submit" class="btn btn-primary float-right" @click="showConfirmUpdate">Update User</button>
           </div>
           <div class="col-md-6">
-            <a href="#" class="btn btn-secondary" @click="$router.push('/manageuser')">Back</a>
+            <a href="#" class="btn btn-secondary">Back</a>
           </div>
         </div>
       </form>

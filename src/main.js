@@ -7,12 +7,17 @@ import MyLogin from './components/myLogin.vue';
 import MyNavBar from './components/myNavbar.vue';
 import TesterDashboard from './components/myTestCase.vue';
 import AdminDashboard from './components/myUser.vue';
+import AddUserForm from './components/myUserAdd.vue';
+import EditUserForm from './components/myUserEdit.vue';
+import MyNavBar from './components/myNavbar.vue';
 
 // Define routes
 const routes = [
   { path: '/', component: MyLogin },
   { path: '/tester', component: TesterDashboard, meta: { role: 'tester' } },
-  { path: '/admin', component: AdminDashboard, meta: { role: 'admin' } },
+  { path: '/manageuser', component: AdminDashboard, meta: { role: 'admin' } },
+  { path: '/adduser', component: AddUserForm, meta: { role: 'admin' } },
+  { path: '/edituser', component: EditUserForm, meta: { role: 'admin' } },
 ];
 
 // Create router instance

@@ -13,7 +13,7 @@ import EditUserForm from './components/myUserEdit.vue';
 
 // Define routes
 const routes = [
-  { path: '/', component: MyLogin },
+  { path: '/', component: MyLogin, meta: { hideNavbar: true } },
   {path: '/forgotpassword', component: ForgotPassword},
   { path: '/tester', component: TesterDashboard, meta: { role: 'tester' } },
   { path: '/manageuser', component: AdminDashboard, meta: { role: 'admin' } },

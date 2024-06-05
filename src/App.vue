@@ -1,6 +1,6 @@
 <template>
   <div>
-    <my-nav-bar :userRole="userRole" @logout="logout" />
+    <my-nav-bar v-if="!$route.meta.hideNavbar" :userRole="userRole" @logout="logout" />
     <router-view @login="setUserRole" />
     <my-footer />
   </div>

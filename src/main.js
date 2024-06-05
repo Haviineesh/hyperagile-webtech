@@ -1,10 +1,11 @@
+import { BootstrapIconsPlugin } from 'bootstrap-icons-vue';
 import { createApp } from 'vue';
-import App from './App.vue';
 import { createRouter, createWebHistory } from 'vue-router';
+import App from './App.vue';
 
+import MyNavBar from './components/myNavbar.vue';
 import TesterDashboard from './components/myTestCase.vue';
 import AdminDashboard from './components/myUser.vue';
-import MyNavBar from './components/myNavbar.vue';
 
 // Define routes
 const routes = [
@@ -21,5 +22,6 @@ const router = createRouter({
 // Create and mount the app
 const app = createApp(App);
 app.use(router);
+app.use(BootstrapIconsPlugin);
 app.component('my-nav-bar', MyNavBar);
 app.mount('#app');

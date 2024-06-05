@@ -11,7 +11,7 @@
       </div>
   
       <div class="mt-3 mb-3 d-flex justify-content-end">
-        <a href="#" class="btn btn-light">Add New User <i class="bi bi-plus"></i></a>
+        <a href="/adduser" class="btn btn-light">Add New User <i class="bi bi-plus"></i></a>
       </div>
   
       <table class="table table-bordered">
@@ -33,12 +33,8 @@
             <td>{{ user.username }}</td>
             <td>{{ user.role }}</td>
             <td>
-              <a href="#" class="btn btn-success">
-                <i class="bi bi-pencil-square"></i>
-              </a>
-              <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
-                <i class="bi bi-trash"></i>
-              </a>
+                <a href="/edituser" class="btn btn-warning btn-sm">Edit</a>
+              <button class="btn btn-danger btn-sm">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -72,9 +68,9 @@
       return {
         searchText: "",
         users: [
-          { userID: 1, email: "user1@example.com", username: "user1", role: "Admin" },
-          { userID: 2, email: "user2@example.com", username: "user2", role: "User" },
-          { userID: 3, email: "user3@example.com", username: "user3", role: "Editor" }
+          { userID: 123, email: "user1@example.com", username: "user1", role: "Admin" },
+          { userID: 223, email: "user2@example.com", username: "user2", role: "User" },
+          { userID: 355, email: "user3@example.com", username: "user3", role: "Editor" }
         ],
         deleteUser: {} // Placeholder for user to be deleted (not used in this example)
       };

@@ -3,12 +3,14 @@ import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import App from './App.vue';
 
+import MyLogin from './components/myLogin.vue';
 import MyNavBar from './components/myNavbar.vue';
 import TesterDashboard from './components/myTestCase.vue';
 import AdminDashboard from './components/myUser.vue';
 
 // Define routes
 const routes = [
+  { path: '/', components: MyLogin },
   { path: '/tester', component: TesterDashboard, meta: { role: 'tester' } },
   { path: '/admin', component: AdminDashboard, meta: { role: 'admin' } },
 ];

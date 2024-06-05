@@ -10,7 +10,7 @@ import AdminDashboard from './components/myUser.vue';
 
 // Define routes
 const routes = [
-  { path: '/', components: MyLogin },
+  { path: '/', component: MyLogin },
   { path: '/tester', component: TesterDashboard, meta: { role: 'tester' } },
   { path: '/admin', component: AdminDashboard, meta: { role: 'admin' } },
 ];

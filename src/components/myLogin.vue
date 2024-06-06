@@ -1,8 +1,8 @@
 <template>
     <div class="container login-container">
       <h2>Login</h2>
-      <div v-if="errorMessage" class="bg-danger justify-content-center p-2 rounded">
-        Incorrect Username or Password!
+      <div v-if="errorMessage" class="alert alert-danger justify-content-center p-2 rounded">
+        {{ errorMessage }}
       </div>
       <form @submit.prevent="handleSubmit">
         <div class="form-group">
@@ -25,7 +25,7 @@
             required
           />
         </div>
-        <button type="submit" class="form-control btn btn-block">Login</button>
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
         <br />
         <a href="/forgotpassword" class="forgot-password">Forgot Password?</a>
       </form>
@@ -114,48 +114,52 @@
   }
   
   h2 {
-    display: block;
     text-align: center;
     margin-bottom: 20px;
-    font-size: 62px;
+    font-size: 2rem;
   }
   
   .login-container {
-    position: relative;
-    max-width: fit-content;
-    max-height: fit-content;
-    margin-top: 120px;
-    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
   .form-group {
-    margin-bottom: 2rem;
-    position: relative;
+    margin-bottom: 1rem;
   }
   
   .form-control {
-    border-radius: 10px;
-    padding-left: 10px;
-    padding-right: 50px;
-    border-top: black;
-    box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.2);
-    text-align: left;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.1);
   }
   
   .btn {
     background: #df20cc;
-    border: black;
-    box-shadow: 0px 5px rgba(0, 0, 0, 0.2);
     color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-left: 50px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    width: 100%;
   }
   
-  svg {
-    width: 100%;
-    height: auto;
+  .forgot-password {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .forgot-password:hover {
+    text-decoration: underline;
   }
   
   .svg-container {
@@ -163,6 +167,11 @@
     bottom: 0;
     width: 100%;
     z-index: 1;
+  }
+  
+  svg {
+    width: 100%;
+    height: auto;
   }
   </style>
   

@@ -18,7 +18,8 @@
             <li class="nav-item">
               <router-link class="nav-link" to="/">Home</router-link>
             </li>
-            <li class="nav-item" v-if="userRole === 'tester'">
+            <!-- v-if="userRole === 'tester'" -->
+            <li class="nav-item" >
               <router-link class="nav-link" to="/tester">Tester Dashboard</router-link>
             </li>
             <li class="nav-item">

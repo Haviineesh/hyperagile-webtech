@@ -7,6 +7,8 @@ import ForgotPassword from './components/myForgotPassword.vue';
 import MyLogin from './components/myLogin.vue';
 import MyNavBar from './components/myNavbar.vue';
 import TesterDashboard from './components/myTestCase.vue';
+import addTestCase from './components/addTestCase.vue';
+import editTestCase from './components/editTestCase.vue';
 import AdminDashboard from './components/myUser.vue';
 import AddUserForm from './components/myUserAdd.vue';
 import EditUserForm from './components/myUserEdit.vue';
@@ -14,8 +16,10 @@ import EditUserForm from './components/myUserEdit.vue';
 // Define routes
 const routes = [
   { path: '/', component: MyLogin, meta: { hideNavbar: true } },
-  {path: '/forgotpassword', component: ForgotPassword},
+  { path: '/forgotpassword', component: ForgotPassword},
   { path: '/tester', component: TesterDashboard, meta: { role: 'tester' } },
+  { path: '/addtest', component: addTestCase, meta:{role :'tester'}},
+  { path: '/edittest', component: editTestCase, meta:{role:'tester'}},
   { path: '/manageuser', component: AdminDashboard, meta: { role: 'admin' } },
   { path: '/adduser', component: AddUserForm, meta: { role: 'admin' } },
   { path: '/edituser', component: EditUserForm, meta: { role: 'admin' } },

@@ -25,6 +25,9 @@
             <li class="nav-item">
               <router-link class="nav-link" to="/manageuser">Manage User</router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/managerole">Roles</router-link>
+            </li>
           </ul>
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">

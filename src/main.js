@@ -3,12 +3,15 @@ import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import App from './App.vue';
 
+import AddRole from './components/addRole.vue';
+import addTestCase from './components/addTestCase.vue';
+import EditRole from './components/editRole.vue';
+import editTestCase from './components/editTestCase.vue';
 import ForgotPassword from './components/myForgotPassword.vue';
 import MyLogin from './components/myLogin.vue';
 import MyNavBar from './components/myNavbar.vue';
+import myRole from './components/myRole.vue';
 import TesterDashboard from './components/myTestCase.vue';
-import addTestCase from './components/addTestCase.vue';
-import editTestCase from './components/editTestCase.vue';
 import AdminDashboard from './components/myUser.vue';
 import AddUserForm from './components/myUserAdd.vue';
 import EditUserForm from './components/myUserEdit.vue';
@@ -23,6 +26,9 @@ const routes = [
   { path: '/manageuser', component: AdminDashboard, meta: { role: 'admin' } },
   { path: '/adduser', component: AddUserForm, meta: { role: 'admin' } },
   { path: '/edituser', component: EditUserForm, meta: { role: 'admin' } },
+  { path: '/managerole', component: myRole, meta: { role: 'admin' } },
+  { path: '/addrole', component: AddRole, meta: { role: 'admin' } },
+  { path: '/editrole', component: EditRole, meta: { role: 'admin' } },
 ];
 
 // Create router instance

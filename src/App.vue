@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 
 export default {
   data() {
@@ -20,9 +20,8 @@ export default {
     setUserRole(role) {
       this.userRole = role;
       localStorage.setItem('userRole', role);
-      if (role === 'admin') this.$router.push('/admin');
-      if (role === 'tester') this.$router.push('/tester');
-      if (role === 'stakeholder') this.$router.push('/stakeholder');
+      if (role === 'admin') this.$router.push('/manageuser');
+      if (role !== 'tester') this.$router.push('/tester');
     },
     logout() {
       localStorage.removeItem('userRole');

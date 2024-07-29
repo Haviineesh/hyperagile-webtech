@@ -101,7 +101,7 @@ export default {
       this.roleToDelete = this.roles.find(role => role.roleID === roleID);
     },
     deleteRole() {
-      axios.delete(`http://your-api-endpoint/api.php?action=deleteUser&id=${this.roleToDelete.roleID}`)
+      axios.delete(`http://localhost:8000/roles/${this.roleToDelete.roleID}`)
         .then(() => {// response?
           this.fetchRoles();
           this.roleToDelete = null;

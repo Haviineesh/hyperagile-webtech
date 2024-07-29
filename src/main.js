@@ -2,7 +2,6 @@ import { BootstrapIconsPlugin } from 'bootstrap-icons-vue';
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import App from './App.vue';
-
 import AddRole from './components/addRole.vue';
 import addTestCase from './components/addTestCase.vue';
 import EditRole from './components/editRole.vue';

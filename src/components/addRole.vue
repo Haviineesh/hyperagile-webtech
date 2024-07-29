@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     createRole() {
-      axios.post('http://your-api-endpoint/api.php?action=createUser', {
+      axios.post('http://localhost:8000/roles', {
         roleName: this.roleName,
         description: this.description
       })

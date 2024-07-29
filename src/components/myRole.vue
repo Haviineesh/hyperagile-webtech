@@ -81,7 +81,7 @@ export default {
   },
   methods: {
     fetchRoles() {
-      axios.get('http://your-api-endpoint/api.php?action=getUsers')
+      axios.get('http://localhost:8000/roles')
         .then(response => {
           this.roles = response.data;
           this.filteredRoles = this.roles;

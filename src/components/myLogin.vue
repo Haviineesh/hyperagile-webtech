@@ -75,20 +75,24 @@ export default {
   methods: {
     async handleSubmit() {
       try {
-        const response = await fetch('http://localhost:8000/users');
-        if (!response.ok) {
-          throw new Error('Failed to fetch users');
-        }
+        const response = await fetch('http://localhost:8000/login.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: this.username,
+            password: this.password,
+          }),
+        });
 
-        const users = await response.json();
-        const user = users.find(
-          (user) => user.username === this.username && user.password === this.password
-        );
+        const data = await response.json();
 
-        if (user) {
-          window.location.href = 'http://localhost:8080/login';
+        if (response.ok) {
+          localStorage.setItem('user', JSON.stringify(data.user));
+          this.$router.push('/');
         } else {
-          this.errorMessage = 'Incorrect Username or Password!';
+          this.errorMessage = data.error;
         }
       } catch (error) {
         console.error('Error:', error);

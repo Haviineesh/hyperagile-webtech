@@ -14,15 +14,13 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 export default {
   data() {
     return {
-      userRole: localStorage.getItem('userRole')
+      userRole: localStorage.getItem('userRole') || 'anonymous'
     };
   },
   methods: {
     setUserRole(role) {
       this.userRole = role;
       localStorage.setItem('userRole', role);
-      if (role === 'admin') this.$router.push('/manageuser');
-      if (role !== 'tester') this.$router.push('/tester');
     },
     logout() {
       this.userRole = 'anonymous';

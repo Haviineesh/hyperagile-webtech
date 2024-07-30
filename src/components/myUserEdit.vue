@@ -48,44 +48,51 @@ export default {
       },
       emailExists: false,
       usernameExists: false,
-      roles: [
-        { id: 1, name: 'Admin' },
-        { id: 2, name: 'Tester' },
-      ]
+      roles: [],
     };
   },
   methods: {
-    submitForm() {
-      axios.put(`http://localhost:8000/users/${this.user.userID}`, this.user)
-        .then(() => {
-          this.$router.push('/manageuser');
-        })
-        .catch(error => {
-          console.error('Error updating user:', error);
-          if (error.response && error.response.data) {
-            if (error.response.data.error.includes('email')) {
-              this.emailExists = true;
-            } else if (error.response.data.error.includes('username')) {
-              this.usernameExists = true;
-            }
-          } else if (error.code === 'ERR_NETWORK') {
-            alert('Network error: Cannot reach the API endpoint');
+    async fetchRoles() {
+      try {
+        const response = await axios.get('http://localhost:8000/roles');
+        this.roles = response.data;
+      } catch (error) {
+        console.error('Error fetching roles:', error);
+      }
+    },
+    async submitForm() {
+      try {
+        await axios.put(`http://localhost:8000/users/${this.user.userID}`, this.user);
+        this.$router.push('/manageuser');
+      } catch (error) {
+        console.error('Error updating user:', error);
+        if (error.response && error.response.data) {
+          if (error.response.data.error.includes('email')) {
+            this.emailExists = true;
+          } else if (error.response.data.error.includes('username')) {
+            this.usernameExists = true;
           }
-        });
+        } else if (error.code === 'ERR_NETWORK') {
+          alert('Network error: Cannot reach the API endpoint');
+        }
+      }
     },
     cancelEdit() {
       this.$router.push('/manageuser');
     }
   },
-  created() {
+  async created() {
     const userId = this.$route.params.id;
-    axios.get(`http://localhost:8000/users/${userId}`)
-      .then(response => {
-        this.user = response.data;
-      })
-      .catch(error => {
-        console.error('Error fetching user:', error);
-      });
+    try {
+      const [userResponse, rolesResponse] = await Promise.all([
+        axios.get(`http://localhost:8000/users/${userId}`),
+        axios.get('http://localhost:8000/roles')
+      ]);
+      this.user = userResponse.data;
+      this.roles = rolesResponse.data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   }
 };
 </script>

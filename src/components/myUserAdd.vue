@@ -52,14 +52,13 @@ export default {
       },
       usernameExists: false,
       emailExists: false,
-      roles: [
-        { id: 1, name: 'Admin' },
-        { id: 2, name: 'Tester' },
-      ]
+      roles: [],
+      loadingRoles: true
     };
   },
   created() {
     this.newUser.password = this.generatePassword();
+    this.fetchRoles();
   },
   computed: {
     maskedPassword() {
@@ -75,6 +74,16 @@ export default {
         password += charset[randomIndex];
       }
       return password;
+    },
+    async fetchRoles() {
+      try {
+        const response = await axios.get('http://localhost:8000/roles');
+        this.roles = response.data;
+        this.loadingRoles = false;
+      } catch (error) {
+        console.error('Error fetching roles:', error);
+        this.loadingRoles = false;
+      }
     },
     async handleSubmit() {
       try {

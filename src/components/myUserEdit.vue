@@ -1,90 +1,102 @@
 <template>
-    <div class="container mt-5">
-      <h2>Edit User</h2>
-      <form @submit.prevent="handleSubmit">
-        <input type="hidden" v-model="user.userID" />
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            v-model="user.email"
-            required
-          />
+  <div class="container p-3 mt-3 mb-3 border border-secondary rounded">
+    <form @submit.prevent="submitForm">
+      <input type="hidden" v-model="user.userID" />
+      <p>
+        <label class="col-3" for="editEmail">Email:</label>
+        <input type="email" id="editEmail" v-model="user.email" class="form-control" required />
+      </p>
+      <div v-if="emailExists" class="alert alert-danger" role="alert">
+        Email already exists! Please choose a different email.
+      </div>
+      <p>
+        <label class="col-3" for="editUsername">Username:</label>
+        <input type="text" id="editUsername" v-model="user.username" class="form-control" required />
+      </p>
+      <div v-if="usernameExists" class="alert alert-danger" role="alert">
+        Username already exists! Please choose a different username.
+      </div>
+      <p>
+        <label class="col-3" for="editRole">Role:</label>
+        <select id="editRole" v-model="user.roleID" class="form-control" required>
+          <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
+        </select>
+      </p>
+      <div class="form-group d-flex justify-content-start">
+        <div class="d-flex justify-content-between">
+          <button type="submit" class="btn btn-success">Update User</button>
         </div>
-  
-        <div v-if="emailExists" class="alert alert-danger" role="alert">
-          Email already exists! Please choose a different email.
+        <div class="ml-3">
+          <button type="button" class="btn btn-danger" @click="cancelEdit">Cancel</button>
         </div>
-  
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input
-            type="text"
-            class="form-control"
-            id="username"
-            v-model="user.username"
-            required
-          />
-        </div>
-  
-        <div v-if="usernameExists" class="alert alert-danger" role="alert">
-          Username already exists! Please choose a different username.
-        </div>
-  
-        <div class="form-group">
-          <label for="role">Role</label>
-          <select class="form-control" id="role" v-model="user.roleID" required>
-            <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
-          </select>
-        </div>
-  
-        <div class="row">
-          <div class="col-md-6">
-            <button type="submit" class="btn btn-primary float-right" @click="showConfirmUpdate">Update User</button>
-          </div>
-          <div class="col-md-6">
-            <a href="#" class="btn btn-secondary">Back</a>
-          </div>
-        </div>
-      </form>
-    </div>
-  </template>
-  
-  <script>
-//   export default {
-//     props: {
-//       // You'll need to pass the user data as a prop from the parent component
-//       user: Object
-//     },
-//     data() {
-//       return {
-//         emailExists: false, // Placeholder for email existence check (not implemented)
-//         usernameExists: false, // Placeholder for username existence check (not implemented)
-//         roles: [
-//           { id: 1, name: "Admin" },
-//           { id: 2, name: "User" },
-//           { id: 3, name: "Editor" }
-//         ]
-//       };
-//     },
-//     methods: {
-//       handleSubmit() {
-//         // You'll need to implement form submission logic here
-//         console.log("Submitted updated user:", this.user);
-//         // Submit form data or handle success/error
-//       },
-//       showConfirmUpdate() {
-//         if (confirm("Are you sure you want to update this user?")) {
-//           this.handleSubmit();
-//         }
-//       }
-//     }
-//   };
-  </script>
-  
-  <style scoped>
-  /* Add any custom styles here */
-  </style>
-  
+      </div>
+    </form>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      user: {
+        userID: '',
+        email: '',
+        username: '',
+        roleID: ''
+      },
+      emailExists: false,
+      usernameExists: false,
+      roles: [],
+    };
+  },
+  methods: {
+    async fetchRoles() {
+      try {
+        const response = await axios.get('http://localhost:8000/roles');
+        this.roles = response.data;
+      } catch (error) {
+        console.error('Error fetching roles:', error);
+      }
+    },
+    async submitForm() {
+      try {
+        await axios.put(`http://localhost:8000/users/${this.user.userID}`, this.user);
+        this.$router.push('/manageuser');
+      } catch (error) {
+        console.error('Error updating user:', error);
+        if (error.response && error.response.data) {
+          if (error.response.data.error.includes('email')) {
+            this.emailExists = true;
+          } else if (error.response.data.error.includes('username')) {
+            this.usernameExists = true;
+          }
+        } else if (error.code === 'ERR_NETWORK') {
+          alert('Network error: Cannot reach the API endpoint');
+        }
+      }
+    },
+    cancelEdit() {
+      this.$router.push('/manageuser');
+    }
+  },
+  async created() {
+    const userId = this.$route.params.id;
+    try {
+      const [userResponse, rolesResponse] = await Promise.all([
+        axios.get(`http://localhost:8000/users/${userId}`),
+        axios.get('http://localhost:8000/roles')
+      ]);
+      this.user = userResponse.data;
+      this.roles = rolesResponse.data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+};
+</script>
+
+<style scoped>
+/* Add any custom styles here if needed */
+</style>

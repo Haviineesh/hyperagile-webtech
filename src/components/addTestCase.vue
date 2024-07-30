@@ -2,36 +2,7 @@
   <div class="container mt-5">
     <h2 class="mb-4">Add Test Case</h2>
     <form @submit.prevent="handleSubmit">
-      <div class="form-group">
-        <label for="projectId">Projects ID:</label>
-        <input type="text" class="form-control" v-model="testCase.projectId" placeholder="Code Test Case" required />
-      </div>
-      <div class="form-group">
-        <label for="smartContractID">Smart Contract ID:</label>
-        <input type="number" class="form-control" v-model="testCase.smartContractID" placeholder="Smart Contract ID" required />
-      </div>
-      <div class="form-group">
-        <label for="testCaseName">Test Case Name:</label>
-        <input type="text" class="form-control" v-model="testCase.testCaseName" placeholder="Test Case Name" required />
-        <div v-if="testCaseNameExists" class="alert alert-danger" role="alert">
-          Test Case Name already exists! Please choose a different test case name.
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="test_desc">Test Case Description:</label>
-        <textarea class="form-control" v-model="testCase.test_desc" rows="3"></textarea>
-      </div>
-      <div class="form-group">
-        <label for="dateCreated">Date Created:</label>
-        <input type="date" class="form-control" v-model="testCase.dateCreated" required />
-      </div>
-      <div class="form-group">
-        <label for="deadline">Deadline:</label>
-        <input type="date" class="form-control" v-model="testCase.deadline" required />
-        <div v-if="deadlineInvalid" class="alert alert-danger" role="alert">
-          Deadline must be later than the Date Created! Please choose a valid deadline.
-        </div>
-      </div>
+      <!-- Other form fields -->
       <div class="form-group">
         <label>Assign Users:</label>
         <div v-for="user in users" :key="user.userID" class="form-check">
@@ -41,10 +12,7 @@
           </label>
         </div>
       </div>
-      <div class="d-flex justify-content-between">
-        <button type="submit" class="btn btn-success">Create <i class="bi bi-plus"></i></button>
-        <button type="button" class="btn btn-danger" @click="cancelCreate">Cancel</button>
-      </div>
+      <!-- Submit and Cancel buttons -->
     </form>
   </div>
 </template>
@@ -63,12 +31,7 @@ export default {
         dateCreated: '',
         deadline: '',
       },
-      users: [
-        // Example data, replace with actual data or fetch from API
-        { userID: 1, username: 'user1', roleName: 'ROLE_USER' },
-        { userID: 2, username: 'user2', roleName: 'ROLE_ADMIN' },
-        { userID: 3, username: 'user3', roleName: 'ROLE_USER' },
-      ],
+      users: [],
       selectedUsers: [],
       testCaseNameExists: false,
       deadlineInvalid: false,
@@ -107,6 +70,22 @@ export default {
     cancelCreate() {
       this.$router.push('/manageTestCases');
     },
+    fetchUsers() {
+      axios.get('http://localhost:8000/users')
+        .then(response => {
+          this.users = response.data.map(user => ({
+            userID: user.userID,
+            username: user.username,
+            roleName: `ROLE_${user.roleID === 1 ? 'ADMIN' : 'USER'}`
+          }));
+        })
+        .catch(error => {
+          console.error('Error fetching users:', error);
+        });
+    },
+  },
+  created() {
+    this.fetchUsers();
   },
 };
 </script>

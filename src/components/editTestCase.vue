@@ -39,19 +39,19 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>Assign Users:</label>
-            <div v-for="user in users" :key="user.userID">
-              <div v-if="user.userID !== 2000" class="form-check">
-                <input type="checkbox" class="form-check-input" :id="'userCheckbox' + user.userID" :value="user.userID" v-model="selectedUsers" />
-                <label class="form-check-label" :for="'userCheckbox' + user.userID">
-                  {{ user.username }} ({{ user.roleName.substring(5) }})
-                </label>
-              </div>
-            </div>
-          </div>
+      <div class="form-group">
+        <label>Assign Users:</label>
+        <div v-for="user in users" :key="user.userID" class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            :id="'userCheckbox' + user.userID"
+            :value="user.userID"
+            v-model="selectedUsers"
+          />
+          <label class="form-check-label" :for="'userCheckbox' + user.userID">
+            {{ user.username }} ({{ user.roleName.substring(5) }})
+          </label>
         </div>
       </div>
       <input type="hidden" v-model="testCase.idtest_cases" />
@@ -78,12 +78,7 @@ export default {
         deadline: '',
         idtest_cases: '',
       },
-      users: [
-        // Example data, replace with actual data or fetch from API
-        { userID: 1, username: 'user1', roleName: 'ROLE_USER' },
-        { userID: 2, username: 'user2', roleName: 'ROLE_ADMIN' },
-        { userID: 3, username: 'user3', roleName: 'ROLE_USER' },
-      ],
+      users: [],
       selectedUsers: [],
       testCaseNameExists: false,
       deadlineInvalid: false,
@@ -120,17 +115,34 @@ export default {
     cancelEdit() {
       this.$router.push('/manageTestCases');
     },
+    fetchUsers() {
+      axios.get('http://localhost:8000/users')
+        .then(response => {
+          this.users = response.data.map(user => ({
+            userID: user.userID,
+            username: user.username,
+            roleName: `ROLE_${user.roleID === 1 ? 'ADMIN' : 'USER'}`
+          }));
+        })
+        .catch(error => {
+          console.error('Error fetching users:', error);
+        });
+    },
+    fetchTestCase() {
+      const testCaseId = this.$route.params.id;
+      axios.get(`http://localhost:8000/testcases/${testCaseId}`)
+        .then(response => {
+          this.testCase = response.data;
+          this.selectedUsers = response.data.users.map(user => user.userID) || [];
+        })
+        .catch(error => {
+          console.error('Error fetching test case:', error);
+        });
+    },
   },
   created() {
-    const testCaseId = this.$route.params.id;
-    axios.get(`http://localhost:8000/testcases/${testCaseId}`)
-      .then(response => {
-        this.testCase = response.data;
-        this.selectedUsers = response.data.users || [];
-      })
-      .catch(error => {
-        console.error('Error fetching test case:', error);
-      });
+    this.fetchUsers();
+    this.fetchTestCase();
   },
 };
 </script>

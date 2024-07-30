@@ -40,8 +40,8 @@ export default {
   },
   methods: {
     submitForm() {
-      axios.post('http://your-api-endpoint/api.php?action=updateUser', this.role)
-        .then(() => {//response ?
+      axios.put(`http://localhost:8000/roles/${this.role.roleID}`, this.role)
+        .then(() => {
           this.$router.push('/managerole');
         })
         .catch(error => {
@@ -54,7 +54,7 @@ export default {
   },
   created() {
     const roleId = this.$route.params.id;
-    axios.get(`http://your-api-endpoint/api.php?action=getUserById&id=${roleId}`)
+    axios.get(`http://localhost:8000/roles/${roleId}`)
       .then(response => {
         this.role = response.data;
       })

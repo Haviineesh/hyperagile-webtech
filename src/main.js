@@ -27,7 +27,7 @@ const routes = [
   { path: '/edituser', component: EditUserForm, meta: { role: 'admin' } },
   { path: '/managerole', component: myRole, meta: { role: 'admin' } },
   { path: '/addrole', component: AddRole, meta: { role: 'admin' } },
-  { path: '/editrole', component: EditRole, meta: { role: 'admin' } },
+  { path: '/editrole/:id', component: EditRole, meta: { role: 'admin' } },
 ];
 
 // Create router instance

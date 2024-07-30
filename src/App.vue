@@ -25,6 +25,7 @@ export default {
       if (role !== 'tester') this.$router.push('/tester');
     },
     logout() {
+      this.userRole = 'anonymous';
       localStorage.removeItem('userRole');
       this.$router.push('/');
     }

@@ -2,7 +2,7 @@
     <div class="container-wrapper">
       <div class="container">
         <div class="text-center">
-          <a href="/login" class="go-back-icon">
+          <a href="/" class="go-back-icon">
             <i class="bi bi-arrow-left"></i>
           </a>
           <h3>

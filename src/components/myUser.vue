@@ -1,132 +1,130 @@
 <template>
-  <div class="container mt-5">
-      <div class="form-group">
-          <input
+    <div>
+      <div class="container">
+        <div class="d-flex justify-content-between">
+          <div class="form-group d-flex align-items-end">
+            <input
               type="text"
               class="form-control"
-              id="searchInput"
-              placeholder="Search..."
               v-model="searchText"
-          />
-      </div>
-
-      <div class="mt-3 mb-3 d-flex justify-content-end">
-          <a href="/adduser" class="btn btn-success">Add New User</a>
-      </div>
-
-      <table class="table table-bordered">
+              placeholder="Search User..."
+              @input="filterUsers"
+            />
+          </div>
+          <div class="mt-3 mb-3">
+            <router-link to="/adduser" class="btn btn-light">
+              Add New User <i class="bi bi-plus"></i>
+            </router-link>
+          </div>
+        </div>
+        <table class="table table-bordered">
           <thead>
-              <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">User ID</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Username</th>
-                  <th scope="col">Role</th>
-                  <th scope="col">Action</th>
-              </tr>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">User ID</th>
+              <th scope="col">Email</th>
+              <th scope="col">Username</th>
+              <th scope="col">Role</th>
+              <th scope="col">Action</th>
+            </tr>
           </thead>
           <tbody>
-              <tr v-for="(user, index) in filteredUsers" :key="user.userID">
-                  <th scope="row">{{ index + 1 }}</th>
-                  <td>{{ user.userID }}</td>
-                  <td>{{ user.email }}</td>
-                  <td>{{ user.username }}</td>
-                  <td>{{ user.roleID }}</td>
-                  <td>
-                      <a href="/edituser" class="btn btn-warning btn-sm">Edit</a>
-                      <button class="btn btn-danger btn-sm" @click="confirmDelete(user)">Delete</button>
-                  </td>
-              </tr>
+            <tr v-for="(user, index) in filteredUsers" :key="user.userID">
+              <td>{{ index + 1 }}</td>
+              <td>{{ user.userID }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.roleID }}</td>
+              <td>
+                <router-link :to="'/edituser/' + user.userID" class="btn btn-warning">
+                  <i class="bi bi-pencil-square"></i>
+                </router-link>
+                <button class="btn btn-danger" @click="confirmDelete(user)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
           </tbody>
-      </table>
-
-      <div v-if="showDeleteModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true" style="display: block;">
-          <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h5 class="modal-title" id="deleteModalLabel">Delete Confirmation</h5>
-                      <button type="button" class="close" @click="closeDeleteModal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                      </button>
-                  </div>
-                  <div class="modal-body">
-                      <p>Are you sure you want to delete this user, {{ deleteUser.username }}?</p>
-                  </div>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" @click="closeDeleteModal">Cancel</button>
-                      <button type="button" class="btn btn-danger" @click="deleteUserConfirmed">Delete</button>
-                  </div>
-              </div>
-          </div>
+        </table>
       </div>
-
-      <div v-if="showDeleteModal" class="modal-backdrop fade show"></div>
-  </div>
-</template>
-
-<script>
-import axios from 'axios';
-
-export default {
-  data() {
+  
+      <!-- Delete Modal -->
+      <div v-if="userToDelete" class="modal fade show d-block" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Delete Confirmation</h5>
+              <button type="button" class="close" @click="userToDelete = null" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to delete user {{ userToDelete.username }} (ID: {{ userToDelete.userID }})?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" @click="userToDelete = null">No</button>
+              <button type="button" class="btn btn-danger" @click="deleteUser">Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+  
+  <script>
+  import axios from 'axios';
+  
+  export default {
+    data() {
       return {
-          searchText: "",
-          users: [],
-          deleteUser: {}, // Placeholder for user to be deleted
-          showDeleteModal: false // Control the visibility of the delete modal
+        searchText: '',
+        users: [],
+        filteredUsers: [],
+        userToDelete: null,
       };
-  },
-  computed: {
-      filteredUsers() {
-          return this.users.filter(user => user.username.toLowerCase().includes(this.searchText.toLowerCase()));
-      }
-  },
-  methods: {
-      fetchData() {
-          axios.get('http://localhost:8000/users')
-              .then(response => {
-                  this.users = response.data;
-              })
-              .catch(error => {
-                  console.error('There was an error!', error);
-              });
+    },
+    created() {
+      this.fetchUsers();
+    },
+    methods: {
+      fetchUsers() {
+        axios
+          .get('http://localhost:8000/users')
+          .then((response) => {
+            this.users = response.data;
+            this.filteredUsers = this.users;
+          })
+          .catch((error) => {
+            console.error('Error fetching users:', error);
+          });
+      },
+      filterUsers() {
+        const query = this.searchText.toLowerCase();
+        this.filteredUsers = this.users.filter(
+          (user) =>
+            user.username.toLowerCase().includes(query) ||
+            user.email.toLowerCase().includes(query)
+        );
       },
       confirmDelete(user) {
-          this.deleteUser = user;
-          this.showDeleteModal = true;
+        this.userToDelete = user;
       },
-      closeDeleteModal() {
-          this.showDeleteModal = false;
+      deleteUser() {
+        axios
+          .delete(`http://localhost:8000/users/${this.userToDelete.userID}`)
+          .then(() => {
+            this.fetchUsers();
+            this.userToDelete = null;
+          })
+          .catch((error) => {
+            console.error('Error deleting user:', error);
+          });
       },
-      deleteUserConfirmed() {
-          axios.delete(`http://localhost/WebTechBackend/api/index.php/users/${this.deleteUser.userID}`)
-              .then(() => {
-                  this.users = this.users.filter(user => user.userID !== this.deleteUser.userID);
-                  this.showDeleteModal = false;
-              })
-              .catch(error => {
-                  console.error('There was an error!', error);
-              });
-      }
-  },
-  mounted() {
-      this.fetchData();
-  }
-};
-</script>
-
-<style scoped>
-/* Add any custom styles here */
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1040;
-}
-.modal.fade.show {
-  display: block;
-}
-</style>
+    },
+  };
+  </script>
+  
+  <style scoped>
+  /* Add your custom styles here if needed */
+  </style>
+  

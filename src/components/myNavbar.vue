@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Welcome: {{ userRole }}</a>
+        <a class="navbar-brand" href="#">Welcome, {{ userRole }}</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -20,10 +20,10 @@
             </li>
             <!-- v-if="userRole === 'tester'" -->
             <li class="nav-item" >
-              <router-link class="nav-link" to="/tester">Tester Dashboard</router-link>
+              <router-link class="nav-link" to="/tester">Test Cases</router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/manageuser">Manage User</router-link>
+              <router-link class="nav-link" to="/manageuser">Users</router-link>
             </li>
             <li class="nav-item">
               <router-link class="nav-link" to="/managerole">Roles</router-link>
